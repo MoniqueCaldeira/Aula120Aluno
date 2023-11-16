@@ -40,10 +40,29 @@ def preprocess_user_input(user_input):
     return np.array(bag)
 
 def bot_class_prediction(user_input):
-    #Previsão da Estiqueta da Classe
 
+    inp = preprocess_user_input(user_input)
+    prediction = model.predict(inp)
+    predicted_class_label = np.argmax(prediction[0])
+    return predicted_class_label
 
 
 def bot_response(user_input):
-    #Resposta de Acordo com a entrada do Usuário
+
+   predicted_class_label =  bot_class_prediction(user_input)
+   predicted_class = classes[predicted_class_label]
+
+   for intent in intents['intents']:
+    if intent['tag']==predicted_class:
+        bot_response = random.choice(intent['responses'])
+        return bot_response
+
+print("Oi, eu sou a Estela, como posso ajudar?")
+
+while True:
+    user_input = input("Digite sua mensagem aqui:")
+    print("Entrada do Usuário: ", user_input)
+
+    response = bot_response(user_input)
+    print("Resposta do Robô: ", response)
 
